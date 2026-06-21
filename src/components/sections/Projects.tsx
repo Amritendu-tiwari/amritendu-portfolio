@@ -94,7 +94,7 @@ export default function Projects() {
 interface Project {
   id: string; icon: string; name: string; company: string; employer: string
   impact: string; description: string; tags: string[]
-  githubUrl: string; liveUrl: string
+  githubUrl: string; liveUrl?: string
 }
 
 function ProjectCard({
