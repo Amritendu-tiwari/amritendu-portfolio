@@ -25,8 +25,12 @@ export default function AiChat() {
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
+  const chatBoxRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight
+    }
   }, [messages, loading])
 
   async function send(text: string) {
@@ -101,7 +105,7 @@ export default function AiChat() {
           </div>
 
           {/* Messages */}
-          <div className="h-80 overflow-y-auto p-5 space-y-4">
+          <div ref={chatBoxRef} className="h-80 overflow-y-auto p-5 space-y-4">
             {messages.map((m, i) => (
               <div key={i} className={`flex msg-enter ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div
@@ -124,7 +128,7 @@ export default function AiChat() {
                 </div>
               </div>
             )}
-            <div ref={bottomRef} />
+            {/* <div ref={bottomRef} /> */}
           </div>
 
           {/* Quick questions */}
