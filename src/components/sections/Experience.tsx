@@ -2,70 +2,97 @@ import { experience } from '../../data/site'
 import SectionLabel from '../ui/SectionLabel'
 import { useInView } from '../../hooks/useInView'
 
+const EXP_COLORS = ['#00FFD1', '#BF00FF', '#FF6B00']
+const EXP_GLOW   = [
+  'rgba(0,255,209,0.8)',
+  'rgba(191,0,255,0.8)',
+  'rgba(255,107,0,0.8)',
+]
+const EXP_BORDER = [
+  'rgba(0,255,209,0.1)',
+  'rgba(191,0,255,0.1)',
+  'rgba(255,107,0,0.1)',
+]
+
 export default function Experience() {
   const { ref, inView } = useInView()
 
   return (
-    <section id="experience" ref={ref as React.RefObject<HTMLElement>} className="py-24 px-6" style={{backgroundColor:"rgba(13,13,26,0.88)"}}>
+    <section id="experience" ref={ref as React.RefObject<HTMLElement>}
+      className="py-24 px-6 md:px-16 lg:px-24"
+      style={{ background: 'rgba(2,2,7,0.98)' }}>
       <div className="max-w-6xl mx-auto">
         <div className={`transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <SectionLabel>Experience</SectionLabel>
-          <h2 className="font-serif-display text-4xl md:text-5xl text-cream mb-4">Where I've built.</h2>
-          <p className="text-muted text-base max-w-xl mb-16 leading-relaxed">
-            Production AI at a fintech CA firm, LLM inference at a consumer AI startup, and analytics at India's largest tractor manufacturer.
+          <SectionLabel color="purple">Work History</SectionLabel>
+          <h2 className="font-display font-bold text-light leading-tight mb-4"
+            style={{ fontFamily: 'Syne', fontSize: 'clamp(2rem,4vw,3rem)' }}>
+            AI shipped to production.<br />
+            <span className="neon-purple">Three companies. Real impact.</span>
+          </h2>
+          <p className="text-base mb-16" style={{ color: '#4A4A6A', maxWidth: '560px' }}>
+            Every metric below is real — pulled from prod logs, client feedback, and deployment records.
+            Not estimated. Not inflated.
           </p>
         </div>
 
-        {/* Timeline */}
-        <div className="relative pl-6 border-l border-border space-y-16">
+        <div className="relative pl-6" style={{ borderLeft: '1px solid rgba(0,255,209,0.12)' }}>
           {experience.map((exp, idx) => (
-            <div
-              key={exp.id}
-              className={`relative transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-              style={{ transitionDelay: `${idx * 120}ms` }}
-            >
-              {/* Timeline dot */}
-              <div className="absolute -left-[1.45rem] top-1.5 w-2.5 h-2.5 rounded-full bg-amber ring-4 ring-ink-2" />
+            <div key={exp.id}
+              className={`relative mb-14 last:mb-0 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: `${idx * 120}ms` }}>
 
-              <div className="flex flex-wrap items-start justify-between gap-3 mb-1">
-                <div>
+              {/* glowing dot */}
+              <div className="absolute -left-[1.65rem] top-2 w-3 h-3 rounded-full"
+                style={{ background: EXP_COLORS[idx], boxShadow: `0 0 14px ${EXP_GLOW[idx]}` }} />
+
+              <div className="rounded-sm p-6 border transition-all hover:scale-[1.005]"
+                style={{ background: 'rgba(255,255,255,0.015)', borderColor: EXP_BORDER[idx] }}>
+
+                <div className="flex flex-wrap items-start justify-between gap-3 mb-1">
                   {exp.companyUrl ? (
-                    <a
-                      href={exp.companyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-serif-display text-2xl text-cream hover:text-amber transition-colors"
-                    >
+                    <a href={exp.companyUrl} target="_blank" rel="noopener noreferrer"
+                      className="font-display font-bold text-xl text-light hover:underline"
+                      style={{ fontFamily: 'Syne' }}>
                       {exp.company} ↗
                     </a>
                   ) : (
-                    <span className="font-serif-display text-2xl text-cream">{exp.company}</span>
+                    <span className="font-display font-bold text-xl text-light" style={{ fontFamily: 'Syne' }}>
+                      {exp.company}
+                    </span>
                   )}
-                </div>
-                <span className="font-mono-code text-xs text-amber bg-amber/8 border border-amber/20 px-3 py-1 rounded-sm">
-                  {exp.period}
-                </span>
-              </div>
-
-              <div className="font-mono-code text-sm text-muted mb-5">
-                {exp.role} · {exp.type} · {exp.location}
-              </div>
-
-              <ul className="space-y-3 mb-5">
-                {exp.highlights.map((h, i) => (
-                  <li key={i} className="flex gap-3 text-cream-2/80 text-sm leading-relaxed">
-                    <span className="text-amber/60 mt-0.5 flex-shrink-0 font-mono-code">▸</span>
-                    {h}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="flex flex-wrap gap-2">
-                {exp.tags.map(t => (
-                  <span key={t} className="font-mono-code text-xs px-2.5 py-1 bg-ink border border-border text-muted rounded-sm">
-                    {t}
+                  <span className="font-mono text-xs px-3 py-1 rounded-sm border"
+                    style={{
+                      fontFamily: 'JetBrains Mono',
+                      color: EXP_COLORS[idx],
+                      borderColor: EXP_COLORS[idx] + '33',
+                      background: EXP_COLORS[idx] + '08',
+                    }}>
+                    {exp.period}
                   </span>
-                ))}
+                </div>
+
+                <div className="font-mono text-xs mb-5"
+                  style={{ fontFamily: 'JetBrains Mono', color: '#4A4A6A' }}>
+                  {exp.role} · {exp.type} · {exp.location}
+                </div>
+
+                <ul className="space-y-3 mb-5">
+                  {exp.highlights.map((h, i) => (
+                    <li key={i} className="flex gap-3 text-sm leading-relaxed" style={{ color: '#6A6A8A' }}>
+                      <span className="flex-shrink-0 mt-0.5" style={{ color: EXP_COLORS[idx], opacity: 0.5 }}>▸</span>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="flex flex-wrap gap-2">
+                  {exp.tags.map(t => (
+                    <span key={t} className="font-mono text-xs px-2.5 py-1 rounded-sm border"
+                      style={{ fontFamily: 'JetBrains Mono', borderColor: 'rgba(255,255,255,0.05)', color: '#4A4A6A', background: 'rgba(255,255,255,0.02)' }}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
