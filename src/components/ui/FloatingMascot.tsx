@@ -51,6 +51,7 @@ export default function FloatingMascot() {
   const [thrown, setThrown] = useState(false)
   const [bounce, setBounce] = useState(false)
   const [greeting, setGreeting] = useState<string | null>(null)
+  const [isVisible, setIsVisible] = useState(true)
 
   const dragStart = useRef({ mx: 0, my: 0, px: 0, py: 0 })
   const lastMouse = useRef({ x: 0, y: 0, t: 0 })
@@ -125,6 +126,8 @@ export default function FloatingMascot() {
     lastMouse.current = { x: t.clientX, y: t.clientY, t: Date.now() }
   }
 
+  if (!isVisible) return null
+
   useEffect(() => {
     function onMouseMove(e: MouseEvent) {
       if (!dragging) return
@@ -189,6 +192,40 @@ export default function FloatingMascot() {
       onTouchStart={onTouchStart}
       onClick={showGreeting}
     >
+      <button
+        type="button"
+        aria-label="Remove mascot"
+        onMouseDown={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation()
+          setIsVisible(false)
+        }}
+        style={{
+          position: 'absolute',
+          left: '-10px',
+          top: '50%',
+          transform: 'translate(-100%, -50%)',
+          width: 24,
+          height: 24,
+          border: 'none',
+          borderRadius: '999px',
+          background: 'rgba(13,13,26,0.95)',
+          color: '#F0EDE8',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 0,
+          fontSize: '14px',
+          lineHeight: 1,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
+          zIndex: 1001,
+        }}
+      >
+        ×
+      </button>
+
       {greeting && (
         <div style={{
           position: 'absolute', bottom: '110%', left: '50%',
