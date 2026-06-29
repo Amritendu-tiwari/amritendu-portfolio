@@ -11,7 +11,7 @@ export const site = {
     linkedin: 'https://www.linkedin.com/in/amritendu-tiwari/',
     leetcode: 'https://leetcode.com',
   },
-  resumeUrl: 'https://drive.google.com/file/d/15p50rNCSrlD2sRIclMLEJI2AZf3FJgKh/view?usp=sharing',
+  resumeUrl: 'https://drive.google.com/file/d/1tj2s7vlDdvMLsDZHGfGtnF7a_W-f9-0P/view?usp=sharing',
   bio: [
     "I'm an AI Engineer who builds systems that move the needle — measured in percentages and rupees, not just model benchmarks.",
     "At Bhargava Negotium, I build AI-native platforms for accounting and audit firms — spanning intelligent document retrieval, automated invoicing, and secure client portals. At Bobble AI, I squeezed 35% more efficiency from Gemma3-4B on a constrained GPU budget using LoRA + Flash Attention 2.",
