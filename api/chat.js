@@ -98,6 +98,19 @@ const OFF_TOPIC_PATTERNS = [
   /summarize (this|the following)/i,
 ]
 
+const HARDCODED_RESPONSES = [
+  {
+    pattern: /what('?s| is) your ideal next role\??/i,
+    content: `I'm looking for a role where I can solve real business problems using AI, machine learning, and data. My ideal position would be as an AI Engineer or Data Scientist, where I can build end-to-end solutions—from data preprocessing and model development to deployment and monitoring.
+
+Over the past two years, I've worked on LLM fine-tuning, Retrieval-Augmented Generation (RAG), automation, and data analytics projects. I'm comfortable with Python, SQL, TensorFlow, scikit-learn, LangChain, Hugging Face, and building production-ready applications using FastAPI, Streamlit, and Docker.
+
+What excites me most is turning raw data into actionable insights and developing intelligent systems that improve user experience or business outcomes. I'm especially interested in working on Generative AI, NLP, recommendation systems, predictive analytics, and MLOps-ready AI applications.
+
+Ultimately, I want to join a team where I can continue learning, contribute to impactful AI products, collaborate with experienced engineers and data scientists, and grow into a well-rounded AI professional who builds scalable, real-world solutions.`,
+  },
+]
+
 function isOffTopic(message) {
   const lower = message.toLowerCase()
   return OFF_TOPIC_PATTERNS.some(p => p.test(lower))
@@ -125,6 +138,11 @@ export default async function handler(req, res) {
     return res.status(200).json({
       content: "I'm only here to answer questions about Amritendu's background and work. Feel free to ask about my projects, experience, or skills!"
     })
+  }
+
+  if (lastUserMsg && HARDCODED_RESPONSES.some(item => item.pattern.test(lastUserMsg.content))) {
+    const item = HARDCODED_RESPONSES.find(item => item.pattern.test(lastUserMsg.content))
+    return res.status(200).json({ content: item.content })
   }
 
   const apiKey = process.env.GROQ_API_KEY
