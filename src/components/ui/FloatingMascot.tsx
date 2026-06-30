@@ -52,6 +52,7 @@ export default function FloatingMascot() {
   const [bounce, setBounce] = useState(false)
   const [greeting, setGreeting] = useState<string | null>(null)
   const [isVisible, setIsVisible] = useState(true)
+  const [hovered, setHovered] = useState(false)
 
   const dragStart = useRef({ mx: 0, my: 0, px: 0, py: 0 })
   const lastMouse = useRef({ x: 0, y: 0, t: 0 })
@@ -66,7 +67,7 @@ export default function FloatingMascot() {
   }
 
   useEffect(() => {
-    if (dragging || thrown) return
+    if (dragging || thrown || hovered) return
     let x = pos.x, y = pos.y, vx = vel.x, vy = vel.y
     function roam() {
       const W = window.innerWidth - SIZE, H = window.innerHeight - SIZE
@@ -82,7 +83,7 @@ export default function FloatingMascot() {
     }
     animRef.current = requestAnimationFrame(roam)
     return () => { if (animRef.current) cancelAnimationFrame(animRef.current) }
-  }, [dragging, thrown, vel])
+  }, [dragging, thrown, hovered, vel])
 
   useEffect(() => {
     if (!thrown) return
@@ -125,8 +126,6 @@ export default function FloatingMascot() {
     dragStart.current = { mx: t.clientX, my: t.clientY, px: pos.x, py: pos.y }
     lastMouse.current = { x: t.clientX, y: t.clientY, t: Date.now() }
   }
-
-  if (!isVisible) return null
 
   useEffect(() => {
     function onMouseMove(e: MouseEvent) {
@@ -173,6 +172,8 @@ export default function FloatingMascot() {
     }
   }, [dragging])
 
+  if (!isVisible) return null
+
   return (
     <div
       style={{
@@ -190,6 +191,8 @@ export default function FloatingMascot() {
       }}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       onClick={showGreeting}
     >
       <button
